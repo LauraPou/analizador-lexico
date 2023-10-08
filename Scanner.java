@@ -106,9 +106,131 @@ public class Scanner {
                     }
 
                     break;
+
+                case 1:
+                    if (Character.isLetter(c) || Character.isDigit(c)) {
+                        estado = 1;
+                        lexema += c;
+
+                    } else {
+                        // Se genera token para identificadores...
+                        TipoToken tt = palabrasReservadas.get(lexema);
+
+                        if (tt == null) {
+                            Token nuevotoken = new Token(TipoToken.IDENTIFIER, lexema);
+                            tokens.add(nuevotoken);
+
+                        } else {
+                            Token nuevotoken = new Token(tt, lexema);
+                            tokens.add(nuevotoken);
+                        }
+
+                        estado = 0;
+                        lexema = "";
+                        i--;
+                    }
+
+                    break;
+
+                case 2:
+                    if (Character.isDigit(c)) {
+                        estado = 2;
+                        lexema += c;
+                    }
+
+                    else if (c == '.') {
+                        estado = 3;
+                        lexema += c;
+                    }
+
+                    else if (c == 'E') {
+                        estado = 5;
+                        lexema += c;
+                    }
+
+                    else {
+                        // Se genera token para número...
+                        Token new_token = new Token(TipoToken.NUMBER, lexema, Integer.valueOf(lexema));
+                        tokens.add(new_token);
+
+                        estado = 0;
+                        lexema = "";
+                        i--;
+                    }
+
+                    break;
+
+                case 3:
+                    if (Character.isDigit(c)) {
+                        estado = 4;
+                        lexema += c;
+
+                    } else {
+                        estado = -1; // Estado de aceptación
+                        lexema += c;
+                    }
+
+                    break;
+
+                case 4:
+                    if (Character.isDigit(c)) {
+                        estado = 4;
+                        lexema += c;
+                    }
+
+                    else if (c == 'E') {
+                        estado = 5;
+                        lexema += c;
+                    }
+
+                    else {
+                        // Se genera token para número...
+                        Token new_token = new Token(TipoToken.NUMBER, lexema, Double.valueOf(lexema));
+                        tokens.add(new_token);
+
+                        estado = 0;
+                        lexema = "";
+                        i--;
+                    }
+
+                    break;
+
+                case 5:
+                    if (c == '+' || c == '-') {
+                        estado = 6;
+                        lexema += c;
+                    }
+
+                    else if (Character.isDigit(c)) {
+                        estado = 7;
+                        lexema += c;
+                    }
+
+                    else {
+                        estado = -1; // Estado de aceptación
+                        lexema += c;
+                    }
+
+                    break;
+
+                case 6:
+                    if (Character.isDigit(c)) {
+                        estado = 7;
+                        lexema += c;
+                    }
+
+                    else {
+                        estado = -1; // Estado de aceptación
+                        lexema += c;
+                    }
+
+                    break;
             }
 
         }
+        // Si no se está en Estado de aceptación se manda un Error...
+        if (estado != 0)
+            Interprete.error(0, lexema);
 
         return tokens;
     }
