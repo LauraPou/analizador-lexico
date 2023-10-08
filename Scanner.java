@@ -225,6 +225,123 @@ public class Scanner {
                     }
 
                     break;
+
+                case 7:
+                    if(Character.isDigit(c)){
+                        estado = 7;
+                        lexema += c;
+                    }
+
+                    else{
+                        //Se genera token para número...
+                        Token new_token = new Token(TipoToken.NUMBER, lexema, Double.valueOf(lexema));
+                        tokens.add(new_token);
+
+                        estado = 0;
+                        lexema = "";
+                        i--;
+                    }
+
+                break;
+
+                case 8:
+                    if(c == '"'){
+                        //Se genera token para una cadena...
+                        lexema += c;
+                        Token new_token = new Token(TipoToken.STRING, lexema);
+                        tokens.add(new_token);
+
+                        estado = 0;
+                        lexema = "";  
+                    }
+
+                    else if(c != '\n' && c != '\r'){
+                        estado = 9;
+                        lexema += c;                    
+                    }
+
+                    else{
+                        estado = -1; //Estado de aceptación
+                        lexema += c;
+                    }
+
+                break;
+
+                case 9:                
+                    if(c == '"'){
+                        //Se genera token para cadena...
+                        lexema += c;
+                        Token new_token = new Token(TipoToken.STRING, lexema);
+                        tokens.add(new_token);
+
+                        estado = 0;
+                        lexema = "";
+                    }
+
+                    else if(c != '\n' && c != '\r'){
+                        estado = 9;
+                        lexema += c;
+                    }
+
+                    else{
+                        estado = -1; //Estado de aceptación
+                        lexema += c;
+                    }
+
+                break;
+
+                case 10:
+                    if(c == '*'){
+                        estado = 12;
+                        lexema += c;
+                    }
+
+                    else if(c == '/'){
+                        estado = 11;
+                        lexema += c;
+                    }
+
+                    else{
+                        //Se genera token para '/'...
+                        Token new_token = new Token(TipoToken.SLASH, lexema);
+                        tokens.add(new_token);
+
+                        estado = 0;
+                        lexema = "";
+                        i--;
+                    }
+
+                break;
+
+                case 11:
+                    if(c != '\n' && c != '\r'){
+                        estado = 11;
+                        lexema += c;
+                    }
+
+                    else{
+                        //Se genera token para comentarios...
+                        Token new_token = new Token(TipoToken.COMMENTS, lexema);
+                        tokens.add(new_token);
+
+                        estado = 0;
+                        lexema = "";
+                        i--;
+                    }
+
+                break;
+
+                case 12:
+                    if(c == '*'){
+                        estado = 13;
+                        lexema += c;
+                    
+                    }else{
+                        estado = 12;
+                        lexema += c;
+                    }
+
+                break;
             }
 
         }
