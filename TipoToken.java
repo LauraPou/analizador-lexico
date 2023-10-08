@@ -14,7 +14,7 @@ public enum TipoToken {
 
     // Palabras clave
     AND, ELSE, FALSE, FUN, FOR, IF, NULL, OR,
-    PRINT, RETURN, TRUE, VAR, WHILE,
+    PRINT, RETURN, TRUE, VAR, WHILE, COMMENTS,
 
     EOF
 }
