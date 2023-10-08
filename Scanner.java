@@ -6,6 +6,7 @@ import java.util.Map;
 public class Scanner {
 
     private static final Map<String, TipoToken> palabrasReservadas;
+    private static final Map<String, TipoToken> oprelacionales;
 
     static {
         palabrasReservadas = new HashMap<>();
@@ -22,6 +23,20 @@ public class Scanner {
         palabrasReservadas.put("true",   TipoToken.TRUE);
         palabrasReservadas.put("var",    TipoToken.VAR);
         palabrasReservadas.put("while",  TipoToken.WHILE);
+
+        oprelacionales = new HashMap<>();
+        oprelacionales.put("(", TipoToken.LEFT_PAREN);
+        oprelacionales.put(")", TipoToken.RIGHT_PAREN);
+        oprelacionales.put("{", TipoToken.LEFT_BRACE);
+        oprelacionales.put("}", TipoToken.RIGHT_BRACE);
+        oprelacionales.put(",", TipoToken.COMMA);
+        oprelacionales.put(".", TipoToken.DOT);
+        oprelacionales.put(";", TipoToken.SEMICOLON);
+        oprelacionales.put("+", TipoToken.PLUS);
+        oprelacionales.put("-", TipoToken.MINUS);
+        oprelacionales.put("*", TipoToken.STAR);
+        oprelacionales.put("[", TipoToken.LEFT_BRACKET);
+        oprelacionales.put("]", TipoToken.RIGHT_BRACKET);
     }
 
     private final String source;
