@@ -342,6 +342,137 @@ public class Scanner {
                     }
 
                 break;
+
+                    case 13:
+                    if(c == '\n'){
+                        estado = 12;
+                        lexema += c;
+                    }
+
+                    else if(c == '/'){
+                        //Se genera token para comentarios...
+                        lexema += c;
+                        Token new_token = new Token(TipoToken.COMMENTS, lexema);
+                        tokens.add(new_token);
+
+                        estado = 0;
+                        lexema = "";
+                    }
+
+                    else{
+                        estado = 13;
+                        lexema += c;
+                    }
+
+                break;
+
+                case 14:
+                    //Se genera token para los operadores relacionales...
+                    TipoToken t_token = oprelacionales.get(lexema);
+                    Token new_Token = new Token(t_token, lexema);
+
+                    tokens.add(new_Token);
+
+                    estado = 0;
+                    lexema = "";
+                    i--;
+
+                break;
+
+                case 15:
+                    if(c == '='){
+
+                        //Se genera token para '<='...
+                        lexema += c;
+                        Token new_token = new Token(TipoToken.LESS_EQUAL, lexema);
+                        tokens.add(new_token);
+
+                        estado = 0;
+                        lexema = "";
+                    
+                    }else{
+                        //Se genera token para '<'...
+                        Token new_token = new Token(TipoToken.LESS, lexema);
+                        tokens.add(new_token);
+
+                        estado = 0;
+                        lexema = "";
+                        i--;
+                    }
+
+                break;
+
+                case 16:
+                    if(c == '='){
+                        //Se genera token para '>='...
+                        lexema += c;
+                        Token new_token = new Token(TipoToken.GREATER_EQUAL, lexema);
+                        tokens.add(new_token);
+
+                        estado = 0;
+                        lexema = "";
+                    
+                    }else{
+                        //Se genera token para '>'...
+                        Token new_token = new Token(TipoToken.GREATER, lexema);
+                        tokens.add(new_token);
+
+                        estado = 0;
+                        lexema = "";
+                        i--;
+                    }
+                break;
+
+                case 17:
+                    if(c == '='){
+                        //Se genera token para '=='...
+                        lexema += c;
+                        Token new_token = new Token(TipoToken.EQUAL_EQUAL, lexema);
+                        tokens.add(new_token);
+
+                        estado = 0;
+                        lexema = "";
+                    
+                    }else{
+                        //Se genera token para '='...
+                        Token new_token = new Token(TipoToken.EQUAL, lexema);
+                        tokens.add(new_token);
+
+                        estado = 0;
+                        lexema = "";
+                        i--;
+                    }
+                break;  
+
+                case 18:
+                    if(c == '='){
+                        //Se genera token para '!='
+                        lexema += c;
+                        Token new_token = new Token(TipoToken.BANG_EQUAL, lexema);
+                        tokens.add(new_token);
+
+                        estado = 0;
+                        lexema = "";
+                    
+                    }else{
+
+                        //Se genera token para '!'
+                        Token new_token = new Token(TipoToken.BANG, lexema);
+                        tokens.add(new_token);
+
+                        estado = 0;
+                        lexema = "";
+                        i--;
+                    }
+                break;
+
+                //Si se llega al estado muerto se genera un error en Interprete...
+                default:
+                        Interprete.error(0, lexema);
+                        estado = 0;
+                        lexema = "";
+                        i--;
+                break;
             }
 
         }
